@@ -23,12 +23,13 @@ def load_datasets():
 
     train_dataset = pd.read_csv("train_dataset.csv")
     test_dataset = pd.read_csv("test_dataset.csv")
+    
+    train_dataset['type'] = train_dataset['type'].replace({'e':1,'p':0})
+    test_dataset['type'] = test_dataset['type'].replace({'e':1,'p':0})
+    train_dataset = pd.get_dummies(train_dataset, dtype=int)
+    test_dataset = pd.get_dummies(test_dataset, dtype=int)
 
-    from preprocess import preprocesar_datos
-
-    train_dataset, test_dataset = preprocesar_datos(train_dataset, test_dataset)
-
-    x_train = train_dataset.drop("type", axis=1)
+    x_train = train_dataset.drop(['type','cap_shape_c'], axis=1)
     y_train = train_dataset["type"]
 
     x_test = test_dataset.drop("type", axis=1)
